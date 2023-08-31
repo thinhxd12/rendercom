@@ -1,38 +1,12 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
+const cors = require('cors');
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-// app.get('/', (req, res) => {
-//   res.json({
-//     message: 'Hello World 123!'
-//   });
-// });
-
-// app.get('/:name', (req, res) => {
-//   let name = req.params.name;
-
-//   res.json({
-//     message: `Hello ${name}`
-//   });
-// });
-
-// app.listen(2020, () => {
-//   console.log('server is listening on port 2020');
-// });
-
-
+const corsOptions = {
+  origin: 'https://thinhxd12.github.io',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 
 const translate = require('google-translate-extended-api');
@@ -49,7 +23,7 @@ const defaultTransOptions = {
 
 
 // http://localhost:2020/trans?text=parlous&from=en&to=vi
-app.get('/trans', async (req, res) => {
+app.get('/trans',cors(corsOptions), async (req, res) => {
   const text = req.query.text;
   const from = req.query.from;
   const to = req.query.to;
@@ -60,4 +34,6 @@ app.get('/trans', async (req, res) => {
   res.type('html').send(result);
 });
 
-
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
