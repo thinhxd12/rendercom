@@ -21,14 +21,36 @@ const defaultTransOptions = {
   removeStyles: false
 }
 
+const getExampleTransOptions = {
+  returnRawResponse: false,
+  detailedTranslations: false,
+  definitionSynonyms: false,
+  detailedTranslationsSynonyms: false,
+  definitions: false,
+  definitionExamples: false,
+  examples: true,
+  removeStyles: false
+}
+
 
 // http://localhost:2020/trans?text=parlous&from=en&to=vi
-app.get('/trans',cors(corsOptions), async (req, res) => {
+app.get('/trans', cors(corsOptions), async (req, res) => {
   const text = req.query.text;
   const from = req.query.from;
   const to = req.query.to;
 
   let result = await translate(text, from, to, defaultTransOptions).then((res) => {
+    return JSON.stringify(res, undefined, 2);
+  }).catch(console.log);
+  res.type('html').send(result);
+});
+
+app.get('/example', cors(corsOptions), async (req, res) => {
+  const text = req.query.text;
+  const from = req.query.from;
+  const to = req.query.to;
+
+  let result = await translate(text, from, to, getExampleTransOptions).then((res) => {
     return JSON.stringify(res, undefined, 2);
   }).catch(console.log);
   res.type('html').send(result);
