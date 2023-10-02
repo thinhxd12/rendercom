@@ -31,7 +31,7 @@ const getExampleTransOptions = {
   examples: true,
   removeStyles: false
 }
-app.get('/wakeup', (req, res) => {
+app.get('/wakeup', cors(corsOptions), (req, res) => {
   res.type('html').send('ok!');
 })
 
