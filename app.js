@@ -31,7 +31,9 @@ const getExampleTransOptions = {
   examples: true,
   removeStyles: false
 }
-
+app.get('/wakeup', (req, res) => {
+  res.type('html').send('ok!');
+})
 
 // http://localhost:2020/trans?text=parlous&from=en&to=vi
 app.get('/trans', cors(corsOptions), async (req, res) => {
