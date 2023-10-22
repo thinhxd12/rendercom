@@ -59,8 +59,8 @@ app.get('/example', cors(corsOptions), async (req, res) => {
 });
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-server.keepAliveTimeout = 180 * 1000;
-server.headersTimeout = 180 * 1000;
+// server.keepAliveTimeout = 180 * 1000;
+// server.headersTimeout = 180 * 1000;
 
 const Gtts = require('gtts');
 
