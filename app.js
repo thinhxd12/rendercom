@@ -67,6 +67,7 @@ app.get('/hear', function (req, res) {
 });
 
 app.get('/wakeup', function(req, res) => {
-  const result = {status:'ok'};
-  res.type('html').send( JSON.stringify(result));
+    res.setHeader('Content-Type', 'application/json');
+    const result = {status:'ok'};
+    res.end(JSON.stringify(result));
 });
