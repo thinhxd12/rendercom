@@ -66,8 +66,8 @@ app.get('/hear', function (req, res) {
   gtts.stream().pipe(res);
 });
 
-app.get('/wakeup', function(req, res) => {
+app.get('/wakeup', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     const result = {status:'ok'};
-    res.end(JSON.stringify(result));
+    res.type('html').send(JSON.stringify(result));
 });
