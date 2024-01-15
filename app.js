@@ -31,9 +31,6 @@ const getExampleTransOptions = {
   examples: true,
   removeStyles: false
 }
-app.get('/wakeup', (req, res) => {
-  res.type('html').send( JSON.stringify({status:'ok'}));
-})
 
 // http://localhost:2020/trans?text=parlous&from=en&to=vi
 app.get('/trans', cors(corsOptions), async (req, res) => {
@@ -67,4 +64,9 @@ const Gtts = require('gtts');
 app.get('/hear', function (req, res) {
   const gtts = new Gtts(req.query.text, req.query.lang);
   gtts.stream().pipe(res);
+});
+
+app.get('/wakeup', function(req, res) => {
+  const result = {status:'ok'};
+  res.type('html').send( JSON.stringify(result));
 });
