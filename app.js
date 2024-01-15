@@ -4,7 +4,8 @@ const port = process.env.PORT || 3001;
 const cors = require('cors');
 
 const corsOptions = {
-  origin: 'https://thinhxd12.github.io',
+  // origin: 'https://thinhxd12.github.io',
+  origin: ['http://localhost:8080', 'https://thinhxd12.github.io'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -61,13 +62,11 @@ const server = app.listen(port, () => console.log(`Example app listening on port
 
 const Gtts = require('gtts');
 
-app.get('/hear', function (req, res) {
+app.get('/hear', cors(corsOptions), function (req, res) {
   const gtts = new Gtts(req.query.text, req.query.lang);
   gtts.stream().pipe(res);
 });
 
-app.get('/wakeup', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    const result = {status:'ok'};
-    res.type('html').send(JSON.stringify(result));
+app.get('/wakeup', cors(corsOptions), function(req, res) {
+    res.json({res: "ok"});
 });
