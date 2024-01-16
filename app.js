@@ -58,17 +58,9 @@ fastify.get('/trans', async (req, reply) => {
   }
 });
 
+const Gtts = require('gtts');
 
-const gTTS = require('gtts');
-
-fastify.get('/hear', async (req, reply) => {
-  const { text, lang } = req.query;
-
-  try {
-    const gtts = new gTTS(text, lang);
-    reply.header('Content-Type', 'audio/mpeg');
-    gtts.stream().pipe(reply.raw);
-  } catch (err) {
-    reply.code(500).send({ error: 'Text-to-Speech failed', details: err.message });
-  }
+fastify.get('/hear', function (req, res) {
+  const gtts = new Gtts(req.query.text, req.query.lang);
+  gtts.stream().pipe(res.raw);
 });
