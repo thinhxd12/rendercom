@@ -13,6 +13,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "fastify": "^4.25.2",
+    "fastify-cors": "^6.1.0",
     "google-translate-extended-api": "^2.0.5",
     "gtts": "^0.2.1"
   },
