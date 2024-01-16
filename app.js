@@ -1,19 +1,20 @@
-// Import the necessary modules
-const fastify = require('fastify')();
-const cors = require('fastify-cors');
+const port = process.env.PORT || 3000;
+const host = ("RENDER" in process.env) ? `0.0.0.0` : `localhost`;
 
-// Register the cors plugin
+const fastify = require('fastify')()
+const cors = require('@fastify/cors')
+
 fastify.register(cors, {
   origin: ['http://localhost:8080', 'https://thinhxd12.github.io'],
-  methods: ["GET", "POST"]  // Allow only GET and POST methods
+  methods: ['GET', 'POST']
 });
 
-// Start the server
-const port = process.env.PORT || 3000;
-fastify.listen(port, '0.0.0.0', (err, address) => {
-  if (err) throw err;
-  fastify.log.info(`server listening on ${address}`);
-});
+fastify.listen({ host: host, port: port }, function (err, address) {
+  if (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+})
 
 const translate = require('google-translate-extended-api');
 const defaultTransOptions = {
@@ -45,7 +46,8 @@ fastify.get('/wakeup', async (request, reply) => {
   return { res: 'it worked!' }
 })
 
-fastify.get('/trans', corsOptions, async (req, reply) => {
+
+fastify.get('/trans', async (req, reply) => {
   const { text, from, to } = req.query;
 
   try {
