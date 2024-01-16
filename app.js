@@ -2,15 +2,12 @@ const cors = require('cors');
 
 // Require the framework and instantiate it
 const fastify = require('fastify')({ logger: true })
+const port = process.env.PORT || 3000;
 
-// Run the server!
-fastify.listen({ port: 3000 }, (err) => {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-})
-
+fastify.listen(port, '0.0.0.0', (err) => {
+  if (err) throw err;
+  console.log(`Server is running on port ${port}`);
+});
 
 const corsOptions = {
   // origin: 'https://thinhxd12.github.io',
