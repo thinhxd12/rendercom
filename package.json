@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2",
+    "fastify": "^4.25.2",
     "google-translate-extended-api": "^2.0.5",
     "gtts": "^0.2.1"
   },

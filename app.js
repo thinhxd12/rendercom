@@ -1,7 +1,16 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3001;
 const cors = require('cors');
+
+// Require the framework and instantiate it
+const fastify = require('fastify')({ logger: true })
+
+// Run the server!
+fastify.listen({ port: 3000 }, (err) => {
+  if (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+})
+
 
 const corsOptions = {
   // origin: 'https://thinhxd12.github.io',
@@ -33,40 +42,35 @@ const getExampleTransOptions = {
   removeStyles: false
 }
 
-// http://localhost:2020/trans?text=parlous&from=en&to=vi
-app.get('/trans', cors(corsOptions), async (req, res) => {
-  const text = req.query.text;
-  const from = req.query.from;
-  const to = req.query.to;
 
-  let result = await translate(text, from, to, defaultTransOptions).then((res) => {
-    return JSON.stringify(res, undefined, 2);
-  }).catch(console.log);
-  res.type('html').send(result);
+// // http://localhost:2020/trans?text=parlous&from=en&to=vi
+
+fastify.get('/wakeup', async (request, reply) => {
+  return { res: 'it worked!' }
+})
+
+fastify.get('/trans', corsOptions, async (req, reply) => {
+  const { text, from, to } = req.query;
+
+  try {
+    const result = await translate(text, from, to, defaultTransOptions);
+    return result;
+  } catch (err) {
+    reply.code(500).send({ error: 'Translation failed', details: err.message });
+  }
 });
 
-app.get('/example', cors(corsOptions), async (req, res) => {
-  const text = req.query.text;
-  const from = req.query.from;
-  const to = req.query.to;
 
-  let result = await translate(text, from, to, getExampleTransOptions).then((res) => {
-    return JSON.stringify(res, undefined, 2);
-  }).catch(console.log);
-  res.type('html').send(result);
-});
+const gTTS = require('gtts');
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-// server.keepAliveTimeout = 180 * 1000;
-// server.headersTimeout = 180 * 1000;
+fastify.get('/hear', async (req, reply) => {
+  const { text, lang } = req.query;
 
-const Gtts = require('gtts');
-
-app.get('/hear', cors(corsOptions), function (req, res) {
-  const gtts = new Gtts(req.query.text, req.query.lang);
-  gtts.stream().pipe(res);
-});
-
-app.get('/wakeup', cors(corsOptions), function(req, res) {
-    res.json({res: "ok"});
+  try {
+    const gtts = new gTTS(text, lang);
+    reply.header('Content-Type', 'audio/mpeg');
+    gtts.stream().pipe(reply.raw);
+  } catch (err) {
+    reply.code(500).send({ error: 'Text-to-Speech failed', details: err.message });
+  }
 });
