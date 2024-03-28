@@ -5,7 +5,7 @@ const fastify = require('fastify')()
 const cors = require('@fastify/cors')
 
 fastify.register(cors, {
-  origin: ['http://localhost:3000','https://thinhvocabs3.netlify.app', 'http://localhost:8080', 'https://thinhxd12.github.io'],
+  origin: ['http://localhost:3000','https://hoctuvung3.netlify.app'],
   methods: ['GET', 'POST']
 });
 
