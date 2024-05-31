@@ -5,7 +5,7 @@ const fastify = require('fastify')()
 const cors = require('@fastify/cors')
 
 fastify.register(cors, {
-  origin: ['http://localhost:3000','https://hoctuvung3.netlify.app'],
+  origin: ['http://localhost:3000','https://hoctuvung3.netlify.app','https://hoctuvung3.vercel.app'],
   methods: ['GET', 'POST']
 });
 
